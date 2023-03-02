@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 
 import '../data/model/restaurant_model.dart';
-import '../ui/restaurant_detail_page.dart';
 
 class RestaurantCard extends StatelessWidget {
   final RestaurantModel _restaurantData;
+  final Function _pushFunction;
   final String _heroId;
 
   const RestaurantCard({
     super.key,
     required RestaurantModel restaurantData,
+    required Function pushFunction,
     required String heroId,
   })  : _restaurantData = restaurantData,
+        _pushFunction = pushFunction,
         _heroId = heroId;
 
   @override
@@ -28,14 +30,7 @@ class RestaurantCard extends StatelessWidget {
         ),
         child: InkWell(
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => RestaurantDetailPage(
-                  restaurantId: _restaurantData.id,
-                  heroId: _heroId,
-                ),
-              ),
-            );
+            _pushFunction();
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),

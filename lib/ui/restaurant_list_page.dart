@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fundamental_final_app/ui/restaurant_detail_page.dart';
 import 'package:flutter_fundamental_final_app/ui/restaurant_favorite_list_page.dart';
 import 'package:provider/provider.dart';
 
@@ -155,6 +156,16 @@ class RestaurantListPage extends StatelessWidget {
 
                             return RestaurantCard(
                               restaurantData: data,
+                              pushFunction: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => RestaurantDetailPage(
+                                      restaurantId: data.id,
+                                      heroId: "${data.id}-list",
+                                    ),
+                                  ),
+                                );
+                              },
                               heroId: "${data.id}-list",
                             );
                           },

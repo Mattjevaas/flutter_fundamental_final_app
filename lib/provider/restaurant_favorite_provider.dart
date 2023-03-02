@@ -44,6 +44,7 @@ class RestaurantFavoriteProvider extends ChangeNotifier {
         _message = "Empty Data";
         notifyListeners();
       } else {
+        _restaurantsData.clear();
         _state = ResultState.hasData;
         _restaurantsData.addAll(data);
         notifyListeners();
@@ -89,5 +90,9 @@ class RestaurantFavoriteProvider extends ChangeNotifier {
     _isSearch = false;
 
     notifyListeners();
+  }
+
+  Future<void> refreshData() async {
+    await _getAllFavoriteRestaurants();
   }
 }
