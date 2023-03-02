@@ -55,9 +55,23 @@ class RestaurantDetailProvider extends ChangeNotifier {
         _checkIsBookmarked();
       }
     } catch (e) {
-      _state = ResultState.error;
-      _message = 'Error : $e';
-      notifyListeners();
+      final localData = _localDataSource.getRestaurantById(id);
+
+      if (localData != null) {
+        _state = ResultState.hasData;
+        _restaurantsData = LocalRestaurantDetailModel(
+          error: false,
+          message: "",
+          restaurant: localData,
+        );
+        notifyListeners();
+
+        _checkIsBookmarked();
+      } else {
+        _state = ResultState.error;
+        _message = 'Error : $e';
+        notifyListeners();
+      }
     }
   }
 
