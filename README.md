@@ -1,6 +1,6 @@
 # flutter_fundamental_final_app
 
-A new Flutter project.
+Final Project for Dicoding Course
 
 ## Getting Started
 
