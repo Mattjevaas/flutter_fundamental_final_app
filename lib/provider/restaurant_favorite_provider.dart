@@ -13,10 +13,10 @@ class RestaurantFavoriteProvider extends ChangeNotifier {
   }
 
   final TextEditingController _textEditingController = TextEditingController();
-
-  late List<RestaurantModel> _restaurantsData;
   late ResultState _state;
 
+  final List<RestaurantModel> _restaurantsData = [];
+  final List<RestaurantModel> _searchData = [];
   bool _isSearch = false;
   String _message = '';
 
@@ -27,6 +27,8 @@ class RestaurantFavoriteProvider extends ChangeNotifier {
   String get message => _message;
 
   bool get isSearch => _isSearch;
+
+  List<RestaurantModel> get searchData => _searchData;
 
   TextEditingController get textEditingController => _textEditingController;
 
@@ -43,7 +45,7 @@ class RestaurantFavoriteProvider extends ChangeNotifier {
         notifyListeners();
       } else {
         _state = ResultState.hasData;
-        _restaurantsData = data;
+        _restaurantsData.addAll(data);
         notifyListeners();
       }
     } catch (e) {
@@ -53,7 +55,39 @@ class RestaurantFavoriteProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> searchRestaurants(String query) async {}
+  void searchRestaurants(String query) {
+    _searchData.clear();
+    _isSearch = true;
 
-  Future<void> onClearSearch() async {}
+    if (query.isNotEmpty && _state == ResultState.hasData) {
+      final data = _restaurantsData.where(
+        (element) => element.name.toLowerCase().contains(query.toLowerCase()),
+      );
+
+      if (data.isEmpty) {
+        _state = ResultState.noData;
+      } else {
+        _state = ResultState.hasData;
+        _searchData.addAll(data);
+      }
+    } else if (query.isEmpty) {
+      onClearSearch();
+    }
+
+    notifyListeners();
+  }
+
+  void onClearSearch() {
+    if (_restaurantsData.isNotEmpty) {
+      _state = ResultState.hasData;
+    } else {
+      _state = ResultState.noData;
+    }
+
+    _textEditingController.clear();
+    _searchData.clear();
+    _isSearch = false;
+
+    notifyListeners();
+  }
 }

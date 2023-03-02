@@ -56,10 +56,8 @@ class RestaurantFavoriteListPage extends StatelessWidget {
                   builder: (context, state, child) {
                     return TextField(
                       controller: state.textEditingController,
-                      onSubmitted: (value) {
-                        if (value.isNotEmpty) {
-                          state.searchRestaurants(value);
-                        }
+                      onChanged: (value) {
+                        state.searchRestaurants(value);
                       },
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
@@ -132,7 +130,9 @@ class RestaurantFavoriteListPage extends StatelessWidget {
                       } else {
                         return ListView.separated(
                           itemBuilder: (context, index) {
-                            RestaurantModel data = value.restaurantsData[index];
+                            RestaurantModel data = value.isSearch
+                                ? value.searchData[index]
+                                : value.restaurantsData[index];
 
                             return RestaurantCard(
                               restaurantData: data,
@@ -141,7 +141,9 @@ class RestaurantFavoriteListPage extends StatelessWidget {
                           },
                           separatorBuilder: (context, index) =>
                               const SizedBox(height: 20),
-                          itemCount: value.restaurantsData.length,
+                          itemCount: value.isSearch
+                              ? value.searchData.length
+                              : value.restaurantsData.length,
                         );
                       }
                     },
