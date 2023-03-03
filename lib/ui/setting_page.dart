@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fundamental_final_app/data/api/api_service.dart';
 import 'package:flutter_fundamental_final_app/provider/setting_provider.dart';
+import 'package:http/http.dart' as https;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,7 +19,7 @@ class SettingPage extends StatelessWidget {
       ),
       body: ChangeNotifierProvider<SettingProvider>(
         create: (context) => SettingProvider(
-          apiService: ApiService(),
+          apiService: ApiService(http: https.Client()),
           preferences: SharedPreferences.getInstance(),
           notificationHelper: NotificationHelper(),
         ),

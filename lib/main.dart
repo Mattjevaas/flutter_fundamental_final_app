@@ -1,3 +1,4 @@
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fundamental_final_app/data/locale/local_data_source.dart';
 import 'package:flutter_fundamental_final_app/ui/restaurant_list_page.dart';
@@ -20,6 +21,8 @@ void main() async {
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
       ?.requestPermission();
+
+  await AndroidAlarmManager.initialize();
 
   runApp(const MyApp());
 }

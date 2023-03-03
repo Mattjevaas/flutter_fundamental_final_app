@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_fundamental_final_app/ui/restaurant_detail_page.dart';
 import 'package:flutter_fundamental_final_app/ui/restaurant_favorite_list_page.dart';
 import 'package:flutter_fundamental_final_app/ui/setting_page.dart';
+import 'package:http/http.dart' as https;
 import 'package:provider/provider.dart';
 
 import '../common/enumeration/result_state.dart';
@@ -20,7 +21,8 @@ class RestaurantListPage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: ChangeNotifierProvider<RestaurantProvider>(
-          create: (_) => RestaurantProvider(apiService: ApiService()),
+          create: (_) =>
+              RestaurantProvider(apiService: ApiService(http: https.Client())),
           child: Container(
             decoration: const BoxDecoration(color: Color(0xfffafafa)),
             padding: const EdgeInsets.all(20.0),

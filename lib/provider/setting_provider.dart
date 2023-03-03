@@ -1,8 +1,11 @@
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fundamental_final_app/data/api/api_service.dart';
+import 'package:flutter_fundamental_final_app/helper/date_helper.dart';
 import 'package:flutter_fundamental_final_app/helper/notification_helper.dart';
-import 'package:flutter_fundamental_final_app/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../main.dart';
 
 class SettingProvider extends ChangeNotifier {
   final ApiService _apiService;
@@ -20,8 +23,9 @@ class SettingProvider extends ChangeNotifier {
   }
 
   final String _prefKey = "NOTIFICATION_KEY";
-  bool _isOn = false;
+  final int _alarmId = 1;
 
+  bool _isOn = false;
   bool get isOn => _isOn;
 
   Future<void> _checkNotificationState() async {
@@ -35,12 +39,34 @@ class SettingProvider extends ChangeNotifier {
   }
 
   Future<void> onChangeState() async {
-    _notificationHelper.showNotification(flutterLocalNotificationsPlugin);
-
     final prefs = await _preferences;
     await prefs.setBool(_prefKey, !_isOn);
 
     _isOn = !isOn;
     notifyListeners();
+
+    _triggerAlarm(_isOn);
+  }
+
+  Future<void> _triggerAlarm(bool state) async {
+    if (state) {
+      await AndroidAlarmManager.periodic(
+        const Duration(hours: 24),
+        _alarmId,
+        _alarmTask,
+        startAt: DateTimeHelper.format(),
+        exact: true,
+        wakeup: true,
+        allowWhileIdle: true,
+      );
+    } else {
+      await AndroidAlarmManager.cancel(_alarmId);
+    }
+  }
+
+  @pragma('vm:entry-point')
+  static void _alarmTask() {
+    final notificationHelper = NotificationHelper();
+    notificationHelper.showNotification(flutterLocalNotificationsPlugin);
   }
 }

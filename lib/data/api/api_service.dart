@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as https;
 
 import '../../common/constants/constants.dart';
 import '../model/local_restaurant_detail_model.dart';
@@ -8,8 +8,12 @@ import '../model/local_restaurant_model.dart';
 
 class ApiService {
   static final ApiService _instance = ApiService._internal();
+  late https.Client http;
 
-  factory ApiService() => _instance;
+  factory ApiService({required https.Client http}) {
+    _instance.http = http;
+    return _instance;
+  }
 
   ApiService._internal();
 

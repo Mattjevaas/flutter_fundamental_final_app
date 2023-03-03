@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fundamental_final_app/data/locale/local_data_source.dart';
+import 'package:http/http.dart' as https;
 import 'package:provider/provider.dart';
 
 import '../common/enumeration/result_state.dart';
@@ -24,7 +25,7 @@ class RestaurantDetailPage extends StatelessWidget {
     return Scaffold(
       body: ChangeNotifierProvider<RestaurantDetailProvider>(
         create: (_) => RestaurantDetailProvider(
-          apiService: ApiService(),
+          apiService: ApiService(http: https.Client()),
           localDataSource: LocalDataSource(),
           restaurantId: _restaurantId,
         ),

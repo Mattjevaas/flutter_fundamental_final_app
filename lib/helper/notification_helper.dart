@@ -1,6 +1,8 @@
-import 'dart:developer';
+import 'dart:math';
 
+import 'package:flutter_fundamental_final_app/data/api/api_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:http/http.dart' as https;
 
 class NotificationHelper {
   final String _channelId = "01";
@@ -24,12 +26,7 @@ class NotificationHelper {
 
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
-      onDidReceiveNotificationResponse: (NotificationResponse details) async {
-        final payload = details.payload;
-        if (payload != null) {
-          log('notification payload: $payload');
-        }
-      },
+      onDidReceiveNotificationResponse: (NotificationResponse details) {},
     );
   }
 
@@ -49,10 +46,16 @@ class NotificationHelper {
       android: androidPlatformChannelSpecifics,
     );
 
+    final service = ApiService(http: https.Client());
+    final data = await service.getAllRestaurants();
+
+    var randomIndex = Random().nextInt(data.restaurants.length);
+    final selectedData = data.restaurants[randomIndex];
+
     await flutterLocalNotificationsPlugin.show(
-      0,
-      'plain title',
-      'plain body',
+      randomIndex,
+      selectedData.name,
+      selectedData.description,
       platformChannelSpecifics,
       payload: 'plain notification',
     );
