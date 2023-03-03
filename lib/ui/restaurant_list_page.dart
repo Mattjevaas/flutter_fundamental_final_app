@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fundamental_final_app/ui/restaurant_detail_page.dart';
 import 'package:flutter_fundamental_final_app/ui/restaurant_favorite_list_page.dart';
+import 'package:flutter_fundamental_final_app/ui/setting_page.dart';
 import 'package:provider/provider.dart';
 
 import '../common/enumeration/result_state.dart';
@@ -61,7 +62,13 @@ class RestaurantListPage extends StatelessWidget {
                           ),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const SettingPage(),
+                              ),
+                            );
+                          },
                           icon: const Icon(Icons.settings),
                         )
                       ],
