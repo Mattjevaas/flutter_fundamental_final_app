@@ -4,6 +4,8 @@ import 'package:flutter_fundamental_final_app/provider/setting_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../helper/notification_helper.dart';
+
 class SettingPage extends StatelessWidget {
   const SettingPage({Key? key}) : super(key: key);
 
@@ -18,6 +20,7 @@ class SettingPage extends StatelessWidget {
         create: (context) => SettingProvider(
           apiService: ApiService(),
           preferences: SharedPreferences.getInstance(),
+          notificationHelper: NotificationHelper(),
         ),
         child: Container(
           padding: const EdgeInsets.all(20.0),
